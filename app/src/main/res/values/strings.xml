@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Expense Tracker</string>
+    <string-array name="filter_options">
+        <item>Daily</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+        <item>Custom Date</item>
+    </string-array>
+</resources>
+

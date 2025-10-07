@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Home or Expense List -->
+    <item
+        android:id="@+id/expenseListFragment"
+        android:title="Expenses"
+        android:icon="@drawable/ic_home" />
+
+    <!-- Your Stats Screen -->
+    <item
+        android:id="@+id/statsFragment"
+        android:title="Stats"
+        android:icon="@drawable/ic_stats" />
+
+</menu>

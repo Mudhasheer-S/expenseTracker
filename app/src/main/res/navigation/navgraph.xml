@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/expenseListFragment">
+
+    <!-- Expense List (Home) -->
+    <fragment
+        android:id="@+id/expenseListFragment"
+        android:name="com.example.expensetracker.ui.fragments.ExpenseListFragment"
+        android:label="Expense Tracker">
+        <action
+            android:id="@+id/action_expenseList_to_addExpense"
+            app:destination="@id/addExpenseFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_expenseList_to_expenseDetails"-->
+<!--            app:destination="@id/expenseDetailsFragment" />-->
+        <action
+            android:id="@+id/action_expenseList_to_categoryManager"
+            app:destination="@id/categoryManagerFragment" />
+    </fragment>
+
+    <!-- Add Expense -->
+    <fragment
+        android:id="@+id/addExpenseFragment"
+        android:name="com.example.expensetracker.ui.fragments.AddExpenseFragment"
+        android:label="Add Expense">
+        <action
+            android:id="@+id/action_addExpense_to_expenseList"
+            app:destination="@id/expenseListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/expenseDetailFragment"
+        android:name="com.example.expensetracker.ui.fragments.ExpenseDetailFragment"
+        tools:layout="@layout/fragment_expense_details"
+        >
+        <argument
+            android:name="expenseId"
+            app:argType="integer" />
+    </fragment>
+
+    <!-- Expense Details -->
+<!--    <fragment-->
+<!--        android:id="@+id/expenseDetailsFragment"-->
+<!--        android:name="com.yourapp.expensetracker.ui.fragments.ExpenseDetailsFragment"-->
+<!--        android:label="Expense Details" />-->
+
+    <!-- Category Manager -->
+    <fragment
+        android:id="@+id/categoryManagerFragment"
+        android:name="com.example.expensetracker.ui.fragments.CategoryManagerFragment"
+        android:label="Manage Categories" />
+
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.example.expensetracker.ui.fragments.StatsFragment"
+        android:label="Stats"
+        tools:layout="@layout/fragment_stats" />
+
+
+
+</navigation>

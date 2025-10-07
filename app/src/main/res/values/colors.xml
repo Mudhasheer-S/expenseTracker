@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="primaryColor">#6200EE</color>
+
+
+    <!-- Accent Colors -->
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <!-- Backgrounds -->
+    <color name="background_light">#F5F7FA</color> <!-- Light grayish-blue background -->
+    <color name="background_dark">#121212</color> <!-- Dark theme background -->
+    <color name="card_background">#FFFFFF</color> <!-- White card background -->
+    <color name="card_background_light">#FDFDFD</color> <!-- Slightly off-white for categories -->
+    <color name="primary_light">#8C7AE6</color> <!-- Soft purple for cards -->
+    <color name="primary_dark">#6A5ACD</color> <!-- Deeper purple for buttons/titles -->
+    <color name="accent_color">#FF4081</color> <!-- Pink accent -->
+    <color name="accent_dark">#C51162</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#2C3E50</color> <!-- Dark blue for main text -->
+    <color name="text_secondary">#7F8C8D</color> <!-- Gray for secondary text -->
+    <color name="text_hint">#BDC3C7</color> <!-- Light gray for hints -->
+    <color name="text_white_bold">#FFFFFF</color> <!-- White for bold text on dark backgrounds -->
+    <color name="text_white_subtle">#E0E0E0</color> <!-- Off-white for subtle text on dark backgrounds -->
+
+    <!-- Icons & Borders -->
+    <color name="icon_color">#7F8C8D</color>
+    <color name="border_color">#E0E0E0</color>
+    <color name="error_color">#E74C3C</color> <!-- Red for errors/delete actions -->
+
+    <!-- Black & White (standard) -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+
+</resources>
