@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         btnStartScan.setOnClickListener(v -> {
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Confirm Scan")
-                    .setMessage("Are you sure you want to scan all SMS messages? This may change your merchant category in your transaction history.")
+                    .setMessage("Click this button only first time to scan.")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         startSmsScan(); // your existing method
                     })

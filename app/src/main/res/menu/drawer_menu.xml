@@ -13,4 +13,9 @@
         android:title="Stats"
         android:icon="@drawable/ic_stats" />
 
+    <item
+        android:id="@+id/debtsFragment"
+        android:title="Credit"
+        android:icon="@drawable/ic_credit" />
+
 </menu>

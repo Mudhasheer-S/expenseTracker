@@ -32,8 +32,10 @@ public class Expense {
     @ColumnInfo(name = "notes")
     public String notes;
 
+    public boolean isSplit = false;
+
     public Expense(double amount, String merchant, long date, String source, int categoryId) {
-        this.amount = amount;
+        this.amount = Math.round(amount * 100.0)/100.0;
         this.merchant = merchant;
         this.date = date;
         this.source = source;

@@ -1,6 +1,7 @@
 package com.example.expensetracker.data.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -13,6 +14,7 @@ import com.example.expensetracker.data.model.CategoryTotal;
 import com.example.expensetracker.data.model.Expense;
 import com.example.expensetracker.data.model.ExpenseWithCategory;
 import com.example.expensetracker.data.model.MerchantCategory;
+import com.example.expensetracker.data.model.SplitExpense;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class ExpenseRepository {
 
     // ---------------- INSERT / UPDATE ----------------
     public void insert(Expense expense) {
+        expense.amount = Math.round(expense.amount * 100.0) / 100.0;
         Executors.newSingleThreadExecutor().execute(() -> {
             updateMerchantPreference(expense.merchant, expense.categoryId);
             expenseDao.insert(expense);
@@ -44,6 +47,7 @@ public class ExpenseRepository {
     }
 
     public void update(Expense expense) {
+        expense.amount = Math.round(expense.amount * 100.0) / 100.0;
         Executors.newSingleThreadExecutor().execute(() -> {
             updateMerchantPreference(expense.merchant, expense.categoryId);
             expenseDao.update(expense);
@@ -77,6 +81,7 @@ public class ExpenseRepository {
     }
 
     public LiveData<List<ExpenseWithCategory>> getExpensesByMonth(String yearMonth) {
+        Log.d("check--","success");
         return expenseDao.getExpensesByMonth(yearMonth);
     }
 
@@ -150,5 +155,12 @@ public class ExpenseRepository {
         return expenseDao.getExpensesByCategoryAndDay(categoryName, startOfDay, endOfDay);
     }
 
+    public void updateAmountAndSplitFlag(int expenseId, double newAmount, boolean flag) {
+        Executors.newSingleThreadExecutor().execute(() -> expenseDao.updateAmountAndSplitFlag(expenseId, Math.round(newAmount * 100.0) / 100.0, flag));
+    }
 
+
+    public LiveData<List<SplitExpense>> getSplitsForExpense(int expenseId) {
+        return expenseDao.getSplitsForExpense(expenseId);
+    }
 }

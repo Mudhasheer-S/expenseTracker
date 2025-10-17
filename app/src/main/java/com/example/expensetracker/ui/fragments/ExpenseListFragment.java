@@ -1,6 +1,5 @@
 package com.example.expensetracker.ui.fragments;
 
-import android.app.DatePickerDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -28,13 +27,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ExpenseListFragment extends Fragment {
-    private ExpenseViewModel expenseViewModel; // ViewModel for DB communication
-    private TextView tvTotal;                  // Shows total expense
-    private TextView tvSelectedMonth;          // Shows current/selected month
-    private ExpenseAdapter adapter;            // RecyclerView adapter
+    private ExpenseViewModel expenseViewModel;
+    private TextView tvTotal;
+    private TextView tvSelectedMonth;
+    private ExpenseAdapter adapter;
+
+    private String monthFilter;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,91 +47,157 @@ public class ExpenseListFragment extends Fragment {
         tvTotal = view.findViewById(R.id.tvTotalExpense);
         tvSelectedMonth = view.findViewById(R.id.tvSelectedMonth);
 
-        // Setup Calendar + formatters
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM", Locale.getDefault()); // For DB queries
-        SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault()); // For UI display
 
-        // Initialize ViewModel
+
+        // ✅ UPDATED: Consistent date formats
+        SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM", Locale.getDefault()); // for DB query
+        SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault()); // for UI display
+
+        // ViewModel init
         expenseViewModel = new ViewModelProvider(this).get(ExpenseViewModel.class);
 
-        // Show current month by default
-        tvSelectedMonth.setText(displayFormat.format(calendar.getTime()));
-        expenseViewModel.setMonth(apiFormat.format(calendar.getTime())); // Notify ViewModel
+        Bundle args = getArguments();
+        int highlightId_nav = -1;
+        monthFilter = null;
 
-        // Setup RecyclerView + Adapter
+        if (args != null) {
+            highlightId_nav = args.getInt("highlightExpenseId", -1);
+            monthFilter = args.getString("monthFilter", null);
+        }
+
+// ✅ Set the month in ViewModel to trigger the observer
+        if (monthFilter != null) {
+            expenseViewModel.loadMonth(monthFilter);
+        }
+
+        // ✅ UPDATED: Read "monthFilter" argument from navigation (if coming from SplitExpenseAdapter)
+        String monthArg = getArguments() != null ? getArguments().getString("monthFilter") : null;
+
+        // ✅ UPDATED: Default to current month if null
+        if (monthArg == null) {
+            monthArg = apiFormat.format(Calendar.getInstance().getTime());
+        }
+
+        // ✅ UPDATED: Convert yyyy-MM → MMMM yyyy for showing in UI
+        try {
+            Date parsedDate = apiFormat.parse(monthArg);
+            tvSelectedMonth.setText(displayFormat.format(parsedDate));
+        } catch (Exception e) {
+            tvSelectedMonth.setText(monthArg);
+        }
+
+        // 🔹 Highlight if coming from SplitExpenseAdapter
+        int highlightId = getArguments() != null ? getArguments().getInt("highlightExpenseId", -1) : -1;
+
+
+        // Setup RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.recyclerExpenses);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ExpenseAdapter();
+        recyclerView.setAdapter(adapter);
 
-        // Click listener for each expense item
+// 🔹 Combined click listener
         adapter.setOnExpenseClickListener(expenseId -> {
             ExpenseDetailFragment sheet = ExpenseDetailFragment.newInstance(expenseId);
             sheet.show(getParentFragmentManager(), "ExpenseDetail");
-        });
-        recyclerView.setAdapter(adapter);
 
-        // Button: Add new expense
+            int pos = getExpensePosition(expenseId);
+            if (pos != -1) {
+                recyclerView.smoothScrollToPosition(pos);
+                adapter.highlightExpense(expenseId);
+            }
+        });
+
+
+
+        // Add Expense button
         Button btnAddExpense = view.findViewById(R.id.btnAddExpense);
         btnAddExpense.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_expenseList_to_addExpense);
         });
 
-        // Button: Manage categories
+        // Manage Categories button
         Button btnCategories = view.findViewById(R.id.btnAddCategory);
         btnCategories.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.action_expenseList_to_categoryManager);
         });
 
-        /**
-         * 🚀 THIS is the function that updates your list when DB changes.
-         * - `getAllExpenses()` returns a LiveData<List<ExpenseWithCategory>>
-         * - Room observes DB changes automatically
-         * - When you add/update/delete an expense, this observer is triggered
-         * - Adapter updates the RecyclerView with new data
-         */
+        // ✅ UPDATED: Observe filtered expenses by month
+//        expenseViewModel.getExpensesByMonth(monthArg).observe(getViewLifecycleOwner(), expenses -> {
+//            adapter.setExpenses(expenses);
+//
+//            double total = 0;
+//            for (ExpenseWithCategory e : expenses) {
+//                total += e.expense.amount;
+//            }
+//            tvTotal.setText("Total Spent: ₹" + String.format("%.2f", total));
+//
+//            // 🔹 Scroll and highlight if coming from SplitExpenseAdapter
+//            if (highlightId != -1) {
+//                int pos = adapter.getPositionById(highlightId);
+//                if (pos != -1) {
+//                    recyclerView.scrollToPosition(pos);
+//                    adapter.highlightExpense(highlightId);
+//                }
+//            }
+//        });
+
+//        expenseViewModel.setMonth(monthArg);
+
+
         expenseViewModel.getAllExpenses().observe(getViewLifecycleOwner(), expenses -> {
-            // Update RecyclerView with new data
             adapter.setExpenses(expenses);
 
-            // Recalculate total amount
             double total = 0;
-            for (ExpenseWithCategory e : expenses) {
-                total += e.expense.amount;
-            }
-
-            // Show total
+            for (ExpenseWithCategory e : expenses) total += e.expense.amount;
             tvTotal.setText("Total Spent: ₹" + String.format("%.2f", total));
+
+            // Scroll & highlight
+            if (highlightId != -1) {
+                for (int i = 0; i < expenses.size(); i++) {
+                    if (expenses.get(i).expense.id == highlightId) {
+                        recyclerView.scrollToPosition(i);
+                        adapter.highlightExpense(highlightId);
+                        break;
+                    }
+                }
+            }
         });
 
-        // Setup month selector (chips + date picker)
+        // Month selector UI
         addMonth(view);
 
         return view;
     }
 
+    private int getExpensePosition(int expenseId) {
+        List<ExpenseWithCategory> list = adapter.getExpenseList();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).expense.id == expenseId) return i;
+        }
+        return -1;
+    }
+
+
     /**
-     * 📅 Handles month filter UI
-     * - Shows chips for available months
-     * - Lets user pick a month
-     * - Updates ViewModel, which updates list automatically
+     * 📅 Handles month filter UI (chips + date picker)
      */
     public void addMonth(View view) {
         ChipGroup chipContainer = view.findViewById(R.id.monthChipContainer);
         View btnCalendar = view.findViewById(R.id.btnPickMonth);
         View monthChipSection = view.findViewById(R.id.monthChipSection);
 
-        // Toggle month filter section
         btnCalendar.setOnClickListener(v -> {
             if (monthChipSection.getVisibility() == View.GONE) {
                 monthChipSection.setVisibility(View.VISIBLE);
                 monthChipSection.setAlpha(0f);
                 monthChipSection.animate().alpha(1f).setDuration(200).start();
             } else {
-                monthChipSection.animate().alpha(0f).setDuration(200).withEndAction(() ->
-                        monthChipSection.setVisibility(View.GONE)).start();
+                monthChipSection.animate().alpha(0f).setDuration(200)
+                        .withEndAction(() -> monthChipSection.setVisibility(View.GONE))
+                        .start();
             }
         });
 
@@ -150,7 +219,6 @@ public class ExpenseListFragment extends Fragment {
                     display = ym;
                 }
 
-                // Create chip for each month
                 Chip chip = new Chip(getContext());
                 chip.setText(display);
                 chip.setTag(ym);
@@ -164,7 +232,7 @@ public class ExpenseListFragment extends Fragment {
                     }
                     chip.setChecked(true);
 
-                    // Update selected month
+                    // ✅ UPDATED: Use same yyyy-MM format for ViewModel
                     String selectedYM = (String) v.getTag();
                     tvSelectedMonth.setText(((Chip) v).getText());
                     expenseViewModel.setMonth(selectedYM);
@@ -172,10 +240,13 @@ public class ExpenseListFragment extends Fragment {
 
                 chipContainer.addView(chip);
 
-                // Auto-select first chip
-                if (i == 0) {
+                // Auto-select first chip only if no monthFilter passed
+                if (i == 0 && monthFilter == null) {
                     chip.performClick();
+                } else if (monthFilter != null && ym.equals(monthFilter)) {
+                    chip.performClick(); // pre-select the correct month chip
                 }
+
             }
         });
     }

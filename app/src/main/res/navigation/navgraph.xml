@@ -10,6 +10,10 @@
         android:id="@+id/expenseListFragment"
         android:name="com.example.expensetracker.ui.fragments.ExpenseListFragment"
         android:label="Expense Tracker">
+        <argument
+            android:name="highlightExpenseId"
+            app:argType="integer"
+            android:defaultValue="-1" />
         <action
             android:id="@+id/action_expenseList_to_addExpense"
             app:destination="@id/addExpenseFragment" />
@@ -59,6 +63,38 @@
         android:label="Stats"
         tools:layout="@layout/fragment_stats" />
 
+    <fragment
+        android:id="@+id/debtsFragment"
+        android:name="com.example.expensetracker.ui.fragments.DebtsFragment"
+        android:label="Debts" >
+        <action
+            android:id="@+id/action_debts_to_friendDetail"
+            app:destination="@id/friendDetailFragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/friendDetailFragment"
+        android:name="com.example.expensetracker.ui.fragments.FriendDetailFragment"
+        android:label="FriendDetail" >
+        <argument
+            android:name="friendId"
+            app:argType="integer" />
+        <argument
+            android:name="friendName"
+            app:argType="string" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/splitExpenseFragment"
+        android:name="com.example.expensetracker.ui.fragments.SplitExpenseFragment"
+        android:label="Split Expense"
+        tools:layout="@layout/fragment_split_expense" />
+
+    <fragment
+        android:id="@+id/manualSplitFragment"
+        android:name="com.example.expensetracker.ui.fragments.ManualSplitFragment"
+        android:label="Manual Split"
+        tools:layout="@layout/fragment_manual_split" />
 
 </navigation>

@@ -78,28 +78,28 @@ public class SmsScanWorker extends Worker {
 
                     } else {
                         // ---- Already scanned ----
-                        Log.d("SMS_SCAN", "ALREADY SCANNED hash=" + hash);
-
-                        Expense existingExpense = expenseRepository.findByMerchantAmountAndDate(
-                                parsedExpense.merchant,
-                                parsedExpense.amount,
-                                timestamp
-                        );
-
-                        // If we find the expense, check if merchant has a saved category
-                        if (existingExpense != null) {
-                            int mappedCategoryId =
-                                    expenseRepository.resolveCategoryIdForMerchant(parsedExpense.merchant);
-
-                            Log.d("SMS_SCAN", "Mapped category for " + parsedExpense.merchant + " = " + mappedCategoryId);
-
-                            if (mappedCategoryId > 0 &&
-                                    existingExpense.categoryId != mappedCategoryId) {
-                                existingExpense.categoryId = mappedCategoryId;
-                                expenseRepository.update(existingExpense);
-                                Log.d("SMS_SCAN", "Updated category for existing expense " + existingExpense.id);
-                            }
-                        }
+//                        Log.d("SMS_SCAN", "ALREADY SCANNED hash=" + hash);
+//
+//                        Expense existingExpense = expenseRepository.findByMerchantAmountAndDate(
+//                                parsedExpense.merchant,
+//                                parsedExpense.amount,
+//                                timestamp
+//                        );
+//
+//                        // If we find the expense, check if merchant has a saved category
+//                        if (existingExpense != null) {
+//                            int mappedCategoryId =
+//                                    expenseRepository.resolveCategoryIdForMerchant(parsedExpense.merchant);
+//
+//                            Log.d("SMS_SCAN", "Mapped category for " + parsedExpense.merchant + " = " + mappedCategoryId);
+//
+//                            if (mappedCategoryId > 0 &&
+//                                    existingExpense.categoryId != mappedCategoryId) {
+//                                existingExpense.categoryId = mappedCategoryId;
+//                                expenseRepository.update(existingExpense);
+//                                Log.d("SMS_SCAN", "Updated category for existing expense " + existingExpense.id);
+//                            }
+//                        }
                     }
                 }
 

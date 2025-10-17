@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/bg_split_item"
+    android:layout_marginBottom="6dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Friend Name -->
+    <TextView
+        android:id="@+id/tvFriendName"
+        android:text="Friend Name"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Split Amount -->
+    <TextView
+        android:id="@+id/tvAmount"
+        android:text="₹0.00"
+        android:textColor="@color/teal_700"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Note or Description -->
+    <TextView
+        android:id="@+id/tvNote"
+        android:text="Dinner share"
+        android:textColor="#666666"
+        android:textSize="13sp"
+        android:layout_marginTop="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

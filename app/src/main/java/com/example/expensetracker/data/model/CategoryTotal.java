@@ -9,7 +9,7 @@ public class CategoryTotal {
 
     public CategoryTotal(String category, double total) {
         this.category = category;
-        this.total = total;
+        this.total = Math.round(total*100.0)/100.0;
     }
 }
 

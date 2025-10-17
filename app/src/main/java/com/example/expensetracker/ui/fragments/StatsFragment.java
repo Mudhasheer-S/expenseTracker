@@ -15,11 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.data.model.CategoryTotal;
+import com.example.expensetracker.data.model.Expense;
 import com.example.expensetracker.data.model.ExpenseWithCategory;
 import com.example.expensetracker.ui.main.ExpenseViewModel;
 import com.github.mikephil.charting.charts.PieChart;
@@ -178,35 +181,36 @@ public class StatsFragment extends Fragment {
         float sum = 0;
 
         int[] chartColors = {
-                // 🔴 Reds / Pinks / Purples
-                Color.parseColor("#F44336"), // Red
-                Color.parseColor("#E91E63"), // Pink
-                Color.parseColor("#FFB6C1"), // Light Pink
-                Color.parseColor("#8E24AA"), // Purple
-                Color.parseColor("#673AB7"), // Indigo
 
-// 🟠 Oranges / Yellows / Limes
+                // 🔵 Blues (Start cool)
+                Color.parseColor("#2196F3"), // Blue (Main)
+                Color.parseColor("#F44336"), // Red
+                Color.parseColor("#00FF7F"), // Spring Green
                 Color.parseColor("#FF9800"), // Orange
-                Color.parseColor("#FFC107"), // Amber
                 Color.parseColor("#FFEB3B"), // Yellow
+                Color.parseColor("#9C27B0"), // Purple
+                Color.parseColor("#00BCD4"), // Cyan
+                Color.parseColor("#FFC107"), // Amber
+                Color.parseColor("#673AB7"), // Deep Purple
+                Color.parseColor("#FF5722"), // Deep Orange
+
+                // 🟢 Greens
+                Color.parseColor("#4CAF50"), // Green
+
+                // 🟡 Yellows
                 Color.parseColor("#CDDC39"), // Lime
 
-// 🟢 Greens / Teals
-                Color.parseColor("#4CAF50"), // Green
-                Color.parseColor("#00FF7F"), // Spring Green
-                Color.parseColor("#009688"), // Teal
-                Color.parseColor("#00BCD4"), // Cyan
-                Color.parseColor("#40E0D0"), // Turquoise
-
-// 🔵 Blues
+                // 🟠 Oranges
+                Color.parseColor("#8BC34A"), // Light Green
+                Color.parseColor("#FF7043"), // Soft Orange
                 Color.parseColor("#03A9F4"), // Light Blue
-                Color.parseColor("#2196F3"), // Blue
 
-// ⚫ Neutral / Earth Tones
-                Color.parseColor("#607D8B"), // Blue Grey
-                Color.parseColor("#9E9E9E"), // Grey
-                Color.parseColor("#795548"), // Brown
-                Color.parseColor("#8B4513"), // Saddle Brown
+                // 🔴 Reds / Pinks
+
+                // 🟣 Purples / Violets
+
+                // 🔵 Loop back to Main
+                Color.parseColor("#2196F3"), // Blue (Main again)
 
         };
 
@@ -269,11 +273,14 @@ public class StatsFragment extends Fragment {
         RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewDialog);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ExpenseDialogAdapter adapter = new ExpenseDialogAdapter();
+        List<Expense> expenseList = new ArrayList<>();
+        NavController navController = NavHostFragment.findNavController(this);
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+
+        ExpenseDialogAdapter adapter = new ExpenseDialogAdapter(expenseList,navController,dialog);
         adapter.setExpenses(expenses);
         recyclerView.setAdapter(adapter);
 
-        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
         dialog.setContentView(dialogView);
         dialog.show();
     }

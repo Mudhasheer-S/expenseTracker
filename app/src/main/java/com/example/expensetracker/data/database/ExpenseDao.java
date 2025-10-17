@@ -11,6 +11,7 @@ import androidx.room.Update;
 import com.example.expensetracker.data.model.CategoryTotal;
 import com.example.expensetracker.data.model.Expense;
 import com.example.expensetracker.data.model.ExpenseWithCategory;
+import com.example.expensetracker.data.model.SplitExpense;
 
 import java.util.List;
 
@@ -186,5 +187,11 @@ public interface ExpenseDao {
             "AND e.date BETWEEN :startOfDay AND :endOfDay " +
             "ORDER BY e.date DESC")
     LiveData<List<ExpenseWithCategory>> getExpensesByCategoryAndDay(String categoryName, long startOfDay, long endOfDay);
+
+    @Query("UPDATE expenses SET amount = :newAmount, isSplit = :flag WHERE id = :id")
+    void updateAmountAndSplitFlag(int id, double newAmount, boolean flag);
+
+    @Query("SELECT * FROM split_expense WHERE expenseId = :expenseId")
+    LiveData<List<SplitExpense>> getSplitsForExpense(int expenseId);
 
 }

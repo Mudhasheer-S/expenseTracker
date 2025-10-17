@@ -2,6 +2,7 @@ package com.example.expensetracker.ui.main;
 
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,6 +13,7 @@ import androidx.lifecycle.Transformations;
 import com.example.expensetracker.data.model.CategoryTotal;
 import com.example.expensetracker.data.model.Expense;
 import com.example.expensetracker.data.model.ExpenseWithCategory;
+import com.example.expensetracker.data.model.SplitExpense;
 import com.example.expensetracker.data.repository.ExpenseRepository;
 
 import java.util.List;
@@ -24,13 +26,14 @@ public class ExpenseViewModel extends AndroidViewModel {
     public LiveData<List<ExpenseWithCategory>> expensesThisMonth = Transformations.switchMap(selectedMonth, yearMonth ->
             repository.getExpensesByMonth(yearMonth)
     );
+
 //    private LiveData<List<ExpenseWithCategory>> allExpenses;
 
     public ExpenseViewModel(@NonNull Application application) {
         super(application);
         repository = new ExpenseRepository(application);
 //        allExpenses = repository.getAllExpenses();
-   availableMonths = repository.getAllExpenseMonths();
+        availableMonths = repository.getAllExpenseMonths();
     }
 
     public LiveData<List<ExpenseWithCategory>> getAllExpenses() {
@@ -113,6 +116,18 @@ public class ExpenseViewModel extends AndroidViewModel {
         return repository.getExpensesByCategoryAndDay(category, startOfDay, endOfDay);
     }
 
+
+    public LiveData<List<SplitExpense>> getSplitsForExpense(int expenseId) {
+        return repository.getSplitsForExpense(expenseId);
+    }
+
+    public LiveData<List<ExpenseWithCategory>> getExpensesByMonth(String yearMonth) {
+        return repository.getExpensesByMonth(yearMonth);
+    }
+
+    public void loadMonth(String yearMonth) {
+        selectedMonth.setValue(yearMonth); // triggers switchMap to fetch expenses
+    }
 
 }
 

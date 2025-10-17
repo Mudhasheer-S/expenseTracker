@@ -12,21 +12,26 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.expensetracker.data.model.Category;
 import com.example.expensetracker.data.model.Expense;
+import com.example.expensetracker.data.model.Friend;
 import com.example.expensetracker.data.model.MerchantCategory;
 import com.example.expensetracker.data.model.SmsHash;
+import com.example.expensetracker.data.model.SplitExpense;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Expense.class, Category.class, MerchantCategory.class, SmsHash.class}, version = 7,exportSchema = false)
+@Database(entities = {Expense.class, Category.class, MerchantCategory.class, SmsHash.class, Friend.class, SplitExpense.class}, version = 13,exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
 
     public abstract ExpenseDao expenseDao();
     public abstract CategoryDao categoryDao();
     public abstract SmsHashDao smsHashDao();
+
+    public abstract FriendDao friendDao();
+    public abstract SplitExpenseDao splitExpenseDao();
 
     public abstract MerchantCategoryDao merchantCategoryDao();
 
