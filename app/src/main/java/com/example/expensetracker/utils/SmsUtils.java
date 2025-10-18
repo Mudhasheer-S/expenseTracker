@@ -32,6 +32,8 @@ public class SmsUtils {
         else if (sender.contains("INDBNK") || sender.contains("INDIAN")) {
             return "INDIAN_BANK";
         }
+        else if (sender.contains("KVBUPI")) return "KVB_BANK";
+        else if (sender.contains("BOBSMS")) return "BOB_BANK";
         else if (suffix.contains("HDFC")) return "HDFC";
         else if (suffix.contains("ICICI")) return "ICICI";
         else if (suffix.contains("IDFC")) return "IDFC";

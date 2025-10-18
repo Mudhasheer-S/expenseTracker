@@ -106,6 +106,9 @@ All unknown merchants are tagged to it
 
 Users can later assign categories, which are remembered
 
+## App version and DB version(For migration)
+App version  = 2.0 --> DB version = 13
+
 ## 👤 Author
 Made with ❤️ by Krishna
 

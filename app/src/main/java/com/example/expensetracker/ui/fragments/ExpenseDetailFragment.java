@@ -41,6 +41,7 @@ public class ExpenseDetailFragment extends BottomSheetDialogFragment {
     private List<Category> categoryList;
     private LinearLayout layoutSplitDetails;
 
+
     public static ExpenseDetailFragment newInstance(int expenseId) {
         ExpenseDetailFragment fragment = new ExpenseDetailFragment();
         Bundle args = new Bundle();

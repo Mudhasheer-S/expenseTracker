@@ -80,6 +80,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
         ExpenseWithCategory expenseWithCategory = expenseList.get(position);
         holder.tvDesc.setText(expenseWithCategory.expense.merchant);
+        if(expenseWithCategory.expense.source.equals("") || expenseWithCategory.expense.source == null){
+            holder.ivBankLogo.setVisibility(View.GONE);
+        }
+        else{
+            holder.ivBankLogo.setVisibility(View.VISIBLE);
+            selectBankLogo(expenseWithCategory.expense.source,holder);
+        }
         holder.tvAmount.setText("₹" +expenseWithCategory. expense.amount);
         holder.tvCategory.setText(expenseWithCategory.category.name);
         holder.ivSplitIndicator.setVisibility(expenseWithCategory.expense.isSplit ? View.VISIBLE : View.GONE);
@@ -104,13 +111,25 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
 
     }
 
+    private void selectBankLogo(String source, ExpenseViewHolder holder) {
+        if(source.equals("INDIAN_BANK")){
+            holder.ivBankLogo.setImageResource(R.mipmap.ind_round);
+        }
+        else if(source.equals("KVB_BANK")) {
+            holder.ivBankLogo.setImageResource(R.mipmap.kvb_round);
+        }
+        else if(source.equals("BOB_BANK")) {
+            holder.ivBankLogo.setImageResource(R.mipmap.bob);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return expenseList.size();
     }
 
     static class ExpenseViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivSplitIndicator;
+        ImageView ivSplitIndicator,ivBankLogo;
         TextView tvDesc, tvAmount, tvDate,tvCategory;
 
         public ExpenseViewHolder(@NonNull View itemView) {
@@ -119,6 +138,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             tvCategory = itemView.findViewById(R.id.tvExpenseCategory);
             ivSplitIndicator = itemView.findViewById(R.id.ivSplitIndicator);
             tvAmount = itemView.findViewById(R.id.tvExpenseAmount);
+            ivBankLogo = itemView.findViewById(R.id.ivBankLogo);
             tvDate = itemView.findViewById(R.id.tvExpenseDate);
         }
     }

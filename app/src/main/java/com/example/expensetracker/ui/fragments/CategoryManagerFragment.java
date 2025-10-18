@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.expensetracker.R;
 import com.example.expensetracker.data.model.Category;
 import com.example.expensetracker.ui.adapter.CategoryGridAdapter;
+import com.example.expensetracker.ui.adapter.CategoryNameOnlyAdapter;
 import com.example.expensetracker.ui.viewmodel.CategoryViewModel;
 
 public class CategoryManagerFragment extends Fragment {
@@ -63,7 +64,7 @@ public class CategoryManagerFragment extends Fragment {
 
     private void setupCategoryGrid() {
         viewModel.getAllCategories().observe(getViewLifecycleOwner(), categories -> {
-            CategoryGridAdapter adapter = new CategoryGridAdapter(requireContext(), categories);
+            CategoryNameOnlyAdapter adapter = new CategoryNameOnlyAdapter(requireContext(), categories);
             gridView.setAdapter(adapter);
         });
 

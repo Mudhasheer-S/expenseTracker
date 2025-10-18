@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         btnStartScan.setOnClickListener(v -> {
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Confirm Scan")
-                    .setMessage("Click this button only first time to scan.")
+                    .setMessage("Auto-scan old and missing messages")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         startSmsScan(); // your existing method
                     })
