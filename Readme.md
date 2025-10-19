@@ -90,6 +90,8 @@ App version  = 2.0 --> DB version = 13
 ## 👤 Thanks
 Thanks to imkks for base of code(scan message)
 
+## 📄 License
+use freely, but credit appreciated.
 
 
 ---
