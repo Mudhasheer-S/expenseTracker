@@ -1,6 +1,6 @@
 # 📲 Android SMS Expense Tracker
 
-An intelligent offline Android app that automatically reads SMS transaction messages and tracks your expenses. It extracts amounts, merchants, and categorizes transactions — learning over time for recurring merchants. Built with Room, MVVM, and Java/Kotlin (customizable).
+An intelligent offline Android app that automatically reads SMS transaction messages and tracks your expenses. It extracts amounts, merchants, and categorizes transactions — learning over time for recurring merchants. Track the group spend with friends. Built with Room, MVVM, and Java/Kotlin (customizable).
 
 ---
 
@@ -21,8 +21,28 @@ An intelligent offline Android app that automatically reads SMS transaction mess
 - 📆 **Date-wise Transaction Log**
 - 🔒 **Offline Only & Private**
     - Data is stored only on the device, with no internet needed
+- 📊 **Category-wise Pie Chart**.
+    - see pie chart on daily,monthly,yearly,custom date basics
+    - see total amount on each categories
+    - what transaction are on each categories
+- 👥 **Add Friends Name**
+    - to track friend share on group spend
+- 👤 **Pay For You And Your Friends And Track It**
+    - split your transaction with friends equally or by manual enter amount on each
+    - track how much the friend need to pay back to you
+    - you can give mark as paid on each split amount of each friend separately
+    - your share is automatically update to main transaction to analysis your expense
+    - you can manual enter credit amount on each friend
+- 🔣 **Image Symbols**
+    - on each transaction split symbol to know this transaction is splitted or not
+    - on each credit in friend section click arrow symbol to know which transaction is splitted
+    - bank logo are added to know the transaction is based on which bank, help to manage multiple bank
 
 ---
+
+## For better UI
+- Use dark mode
+- work well for Indian Bank, KVB bank, BOB Bank. -->(add you bank, parser file for your bank and your bank logo)
 
 ## 📦 Tech Stack
 
@@ -33,42 +53,11 @@ An intelligent offline Android app that automatically reads SMS transaction mess
 
 ---
 
-## 🗃️ Database Schema
-
-### `Transaction`
-| Field        | Type    | Description                   |
-|--------------|---------|-------------------------------|
-| id           | Int     | Primary key                   |
-| date         | String  | ISO date format               |
-| amount       | Double  | Transaction amount            |
-| merchant     | String  | Merchant name extracted       |
-| category_id  | Int     | Foreign key to `Category`     |
-| sms_content  | String  | Original SMS message          |
-
-### `Category`
-| Field | Type   | Description        |
-|-------|--------|--------------------|
-| id    | Int    | Primary key        |
-| name  | String | Category name      |
-
-### `Merchant`
-| Field       | Type   | Description            |
-|-------------|--------|------------------------|
-| id          | Int    | Primary key            |
-| name        | String | Merchant name          |
-| category_id | Int    | Category linked to it  |
-
-### `SMS Hash`
-| Field | Type   | Description |
-|-------|--------|-------------|
-| hash  | String | Primary Key |
----
-
 ## 🚀 Setup Instructions
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/sms-expense-tracker.git
+git clone https://github.com/Mudhasheer-S/expenseTracker.git
 ```
 ### 2. Open in Android Studio
 ### 3. Grant SMS Permissions
@@ -83,22 +72,11 @@ Ensure these are in your AndroidManifest.xml:
 ### 4. Build & Run
 You can run it on your device/emulator.
 
-### 5. Generate APK
-Go to Build > Build APK(s) or generate signed APK for release.
-
-🧩 Ideas for Future Enhancements
-Budget limits with alerts
-
-Export to CSV or PDF
-
-Recurring expense detection
-
-Pie chart dashboards
-
-ML-based merchant recognition
-
-Firebase / Drive backup (optional)
-
+### 5. APK
+Download the .apk from release section of github
+```bash
+https://github.com/Mudhasheer-S/expenseTracker/releases/tag/v2.0.0
+```
 ## 📌 Default Category
 Default category has ID = 1
 
@@ -109,11 +87,9 @@ Users can later assign categories, which are remembered
 ## App version and DB version(For migration)
 App version  = 2.0 --> DB version = 13
 
-## 👤 Author
-Made with ❤️ by Krishna
+## 👤 Thanks
+Thanks to imkks for base of code(scan message)
 
-## 📄 License
-MIT License – use freely, but credit appreciated.
 
 
 ---
