@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.data.model.Category;
+import com.example.expensetracker.data.model.Expense;
 import com.example.expensetracker.data.model.Friend;
 import com.example.expensetracker.data.model.SplitExpense;
 import com.example.expensetracker.data.repository.ExpenseRepository;
@@ -30,6 +31,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +42,9 @@ public class ExpenseDetailFragment extends BottomSheetDialogFragment {
     private Spinner spinnerCategory;
     private List<Category> categoryList;
     private LinearLayout layoutSplitDetails;
+
+    private boolean categoriesLoaded = false;
+    private Expense currentExpense;
 
 
     public static ExpenseDetailFragment newInstance(int expenseId) {
@@ -97,40 +102,68 @@ public class ExpenseDetailFragment extends BottomSheetDialogFragment {
         CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
 
         // Load categories asynchronously
-        Executors.newSingleThreadExecutor().execute(() -> {
-            List<Category> categories = categoryViewModel.getAllCategoriesStatic();
-            requireActivity().runOnUiThread(() -> {
-                categoryList = categories;
-                ArrayAdapter<Category> adapter = new ArrayAdapter<>(
-                        getContext(),
-                        android.R.layout.simple_spinner_item,
-                        categories
-                );
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerCategory.setAdapter(adapter);
-            });
+//        Executors.newSingleThreadExecutor().execute(() -> {
+//            List<Category> categories = categoryViewModel.getAllCategoriesStatic();
+//            requireActivity().runOnUiThread(() -> {
+//                categoryList = categories;
+//                ArrayAdapter<Category> adapter = new ArrayAdapter<>(
+//                        getContext(),
+//                        android.R.layout.simple_spinner_item,
+//                        categories
+//                );
+//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                spinnerCategory.setAdapter(adapter);
+//            });
+//        });
+
+        categoryViewModel.getAllCategories().observe(getViewLifecycleOwner(), categories -> {
+            if (categories == null) return;
+
+            categoryList = categories;
+            ArrayAdapter<Category> adapter = new ArrayAdapter<>(
+                    getContext(),
+                    android.R.layout.simple_spinner_item,
+                    categories
+            );
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerCategory.setAdapter(adapter);
+
+            categoriesLoaded = true;
+            setCategorySelectionIfReady();
         });
 
         // Load expense
         expenseViewModel.getExpenseById(expenseId).observe(getViewLifecycleOwner(), expense -> {
+//            if (expense == null) return;
+//
+//            etMerchant.setText(expense.expense.merchant);
+//            etAmount.setText(String.valueOf(expense.expense.amount));
+//            etDate.setText(DateFormat.getDateInstance().format(new Date(expense.expense.date)));
+//            etNotes.setText(expense.expense.getNotes());
+//
+//            Log.d("-----------",""+categoryList);
+//            // Set category
+//            if (categoryList != null) {
+//                for (int i = 0; i < categoryList.size(); i++) {
+//                    Log.d("check category-------",""+categoryList.get(i).id+" "+expense.expense.categoryId);
+//                    if (categoryList.get(i).id == expense.expense.categoryId) {
+//                        spinnerCategory.setSelection(i);
+//                        break;
+//                    }
+//                }
+//            }
+
             if (expense == null) return;
+
+            currentExpense = expense.expense;
 
             etMerchant.setText(expense.expense.merchant);
             etAmount.setText(String.valueOf(expense.expense.amount));
-            etDate.setText(DateFormat.getDateInstance().format(new Date(expense.expense.date)));
+            etDate.setText((new SimpleDateFormat("dd MMM yyyy hh:mm a")).format(new Date(expense.expense.date)));
+
             etNotes.setText(expense.expense.getNotes());
 
-            Log.d("-----------",""+categoryList);
-            // Set category
-            if (categoryList != null) {
-                for (int i = 0; i < categoryList.size(); i++) {
-                    Log.d("check category-------",""+categoryList.get(i).id+" "+expense.expense.categoryId);
-                    if (categoryList.get(i).id == expense.expense.categoryId) {
-                        spinnerCategory.setSelection(i);
-                        break;
-                    }
-                }
-            }
+            setCategorySelectionIfReady();
 
             // 👇 Check if already split
             if (expense.expense.isSplit) {
@@ -238,6 +271,16 @@ public class ExpenseDetailFragment extends BottomSheetDialogFragment {
         });
     }
 
+    private void setCategorySelectionIfReady() {
+        if (categoriesLoaded && currentExpense != null && categoryList != null) {
+            for (int i = 0; i < categoryList.size(); i++) {
+                if (categoryList.get(i).id == currentExpense.categoryId) {
+                    spinnerCategory.setSelection(i);
+                    break;
+                }
+            }
+        }
+    }
 
 
 }

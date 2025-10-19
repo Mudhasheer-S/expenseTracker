@@ -154,15 +154,21 @@ public class ExpenseListFragment extends Fragment {
             for (ExpenseWithCategory e : expenses) total += e.expense.amount;
             tvTotal.setText("Total Spent: ₹" + String.format("%.2f", total));
 
-            // Scroll & highlight
-            if (highlightId != -1) {
-                for (int i = 0; i < expenses.size(); i++) {
-                    if (expenses.get(i).expense.id == highlightId) {
-                        recyclerView.scrollToPosition(i);
-                        adapter.highlightExpense(highlightId);
-                        break;
+
+            if (getArguments() != null && getArguments().containsKey("highlightExpenseId")) {
+                int checkhighlightid = getArguments().getInt("highlightExpenseId", -1);
+                // Scroll & highlight
+                if (checkhighlightid != -1) {
+                    for (int i = 0; i < expenses.size(); i++) {
+                        if (expenses.get(i).expense.id == checkhighlightid) {
+                            recyclerView.scrollToPosition(i);
+                            adapter.highlightExpense(checkhighlightid);
+                            break;
+                        }
                     }
                 }
+                getArguments().remove("highlightExpenseId");
+
             }
         });
 

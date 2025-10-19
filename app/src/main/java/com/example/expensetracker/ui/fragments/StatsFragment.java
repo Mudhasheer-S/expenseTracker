@@ -146,6 +146,34 @@ public class StatsFragment extends Fragment {
         });
     }
 
+//    private void pickCustomDateRange() {
+//        customStartDate = Calendar.getInstance();
+//        customEndDate = Calendar.getInstance();
+//
+//        DatePickerDialog startPicker = new DatePickerDialog(getContext(),
+//                (view, year, month, dayOfMonth) -> {
+//                    customStartDate.set(year, month, dayOfMonth);
+//
+//                    DatePickerDialog endPicker = new DatePickerDialog(getContext(),
+//                            (view2, year2, month2, day2) -> {
+//                                customEndDate.set(year2, month2, day2);
+//
+//                                customStartMillis = customStartDate.getTimeInMillis();
+//                                customEndMillis = customEndDate.getTimeInMillis();
+//
+//                                expenseViewModel.getCategoryTotalsByDateRange(customStartMillis, customEndMillis)
+//                                        .observe(getViewLifecycleOwner(), StatsFragment.this::updateChart);
+//                            },
+//                            customEndDate.get(Calendar.YEAR),
+//                            customEndDate.get(Calendar.MONTH),
+//                            customEndDate.get(Calendar.DAY_OF_MONTH));
+//                    endPicker.show();
+//                },
+//                customStartDate.get(Calendar.YEAR),
+//                customStartDate.get(Calendar.MONTH),
+//                customStartDate.get(Calendar.DAY_OF_MONTH));
+//        startPicker.show();
+//    }
     private void pickCustomDateRange() {
         customStartDate = Calendar.getInstance();
         customEndDate = Calendar.getInstance();
@@ -158,9 +186,21 @@ public class StatsFragment extends Fragment {
                             (view2, year2, month2, day2) -> {
                                 customEndDate.set(year2, month2, day2);
 
+                                // ✅ Ensure full-day coverage
+                                customStartDate.set(Calendar.HOUR_OF_DAY, 0);
+                                customStartDate.set(Calendar.MINUTE, 0);
+                                customStartDate.set(Calendar.SECOND, 0);
+                                customStartDate.set(Calendar.MILLISECOND, 0);
+
+                                customEndDate.set(Calendar.HOUR_OF_DAY, 23);
+                                customEndDate.set(Calendar.MINUTE, 59);
+                                customEndDate.set(Calendar.SECOND, 59);
+                                customEndDate.set(Calendar.MILLISECOND, 999);
+
                                 customStartMillis = customStartDate.getTimeInMillis();
                                 customEndMillis = customEndDate.getTimeInMillis();
 
+                                // ✅ Now the last day’s transactions will be included
                                 expenseViewModel.getCategoryTotalsByDateRange(customStartMillis, customEndMillis)
                                         .observe(getViewLifecycleOwner(), StatsFragment.this::updateChart);
                             },
@@ -174,6 +214,7 @@ public class StatsFragment extends Fragment {
                 customStartDate.get(Calendar.DAY_OF_MONTH));
         startPicker.show();
     }
+
 
     private void updateChart(List<CategoryTotal> categoryTotals) {
         List<PieEntry> entries = new ArrayList<>();

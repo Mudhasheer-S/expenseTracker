@@ -66,7 +66,7 @@
     <fragment
         android:id="@+id/debtsFragment"
         android:name="com.example.expensetracker.ui.fragments.DebtsFragment"
-        android:label="Debts" >
+        android:label="Credit" >
         <action
             android:id="@+id/action_debts_to_friendDetail"
             app:destination="@id/friendDetailFragment" />

@@ -91,6 +91,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         holder.tvCategory.setText(expenseWithCategory.category.name);
         holder.ivSplitIndicator.setVisibility(expenseWithCategory.expense.isSplit ? View.VISIBLE : View.GONE);
         holder.tvDate.setText(DateFormat.getDateInstance().format(new Date(expenseWithCategory.expense.date)));
+
+
         // 🔹 Click listener
 
         holder.itemView.setOnClickListener(v -> {
@@ -104,6 +106,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         if (expenseWithCategory.expense.id == highlightedExpenseId) {
             holder.itemView.setBackgroundColor(Color.parseColor("#333333")); // subtle grey shine for dark mode
             animateShine(holder.itemView);
+
+
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }

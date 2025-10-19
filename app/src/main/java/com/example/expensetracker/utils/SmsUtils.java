@@ -29,11 +29,11 @@ public class SmsUtils {
         String suffix = sender.toUpperCase();
         Log.d("GET BANK","Get bank"+suffix);
         if (suffix.contains("SBI")) return "SBI";
-        else if (sender.contains("INDBNK") || sender.contains("INDIAN")) {
+        else if (sender.contains("INDBNK") || sender.contains("INDIAN") || sender.contains("IND")) {
             return "INDIAN_BANK";
         }
-        else if (sender.contains("KVBUPI")) return "KVB_BANK";
-        else if (sender.contains("BOBSMS")) return "BOB_BANK";
+        else if (sender.contains("KVBUPI") || sender.contains("KVBANK") || sender.contains("KVB")) return "KVB_BANK";
+        else if (sender.contains("BOBSMS") || sender.contains("BOB")) return "BOB_BANK";
         else if (suffix.contains("HDFC")) return "HDFC";
         else if (suffix.contains("ICICI")) return "ICICI";
         else if (suffix.contains("IDFC")) return "IDFC";
