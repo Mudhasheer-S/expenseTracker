@@ -98,6 +98,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Add Expense"
+                    android:autoSizeTextType="uniform"
                     style="@style/Widget.MaterialComponents.Button"
                     app:cornerRadius="24dp"
                     android:layout_marginEnd="8dp" />

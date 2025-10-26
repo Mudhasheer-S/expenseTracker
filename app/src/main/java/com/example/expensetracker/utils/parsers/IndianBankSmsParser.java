@@ -14,7 +14,7 @@ public class IndianBankSmsParser implements SmsParser {
     // Updated pattern to also capture UPI Ref / transaction ID
     // Example: A/c *1151 debited Rs. 1.00 on 28-09-25 to NAGARJUN. UPI:563732863223.
     private static final Pattern INDIAN_BANK_PATTERN = Pattern.compile(
-            "A/c \\*?(\\d+)\\s+(debited|credited)\\s+Rs\\.?\\s*(\\d+(?:\\.\\d{1,2})?)\\s+on\\s+(\\d{2}-\\d{2}-\\d{2})\\s+to\\s+([A-Za-z0-9@._ ]+?)\\.\\s*UPI:(\\d+)",
+            "A/c \\*?(\\d+)\\s+(debited|credited)\\s+Rs\\.?\\s*(\\d+(?:\\.\\d{1,2})?)\\s+on\\s+(\\d{2}-\\d{2}-\\d{2})\\s+to\\s+([A-Za-z0-9@. _-]+?)\\.\\s*UPI:(\\d+)",
             Pattern.CASE_INSENSITIVE
     );
 

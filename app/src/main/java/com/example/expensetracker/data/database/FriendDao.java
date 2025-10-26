@@ -20,7 +20,7 @@ public interface FriendDao {
     @Update
     void update(Friend friend);
 
-    @Query("SELECT * FROM friends ORDER BY name ASC")
+    @Query("SELECT * FROM friends ORDER BY totalDue DESC ,name ASC")
     LiveData<List<Friend>> getAllFriends();
 
     @Query("SELECT * FROM friends WHERE id = :id LIMIT 1")
@@ -35,7 +35,7 @@ public interface FriendDao {
     @Query("UPDATE friends SET totalDue = totalDue + :amount WHERE id = :friendId")
     void updateTotalDue(int friendId, double amount);
 
-    @Query("SELECT * FROM friends ORDER BY name ASC")
+    @Query("SELECT * FROM friends ORDER BY totalDue DESC, name ASC")
     List<Friend> getAllFriendsDirect();
 
 }

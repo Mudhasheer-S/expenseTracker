@@ -77,6 +77,12 @@ Download the .apk from release section of github
 ```bash
 https://github.com/Mudhasheer-S/expenseTracker/releases/tag/v2.0.0
 ```
+
+### 6. Install
+Turn on Developer Options from your settings.
+Allow installation from unknown sources (Files app).
+Disable Play Protect from Play Store if it blocks the install.
+
 ## 📌 Default Category
 Default category has ID = 1
 
@@ -86,6 +92,7 @@ Users can later assign categories, which are remembered
 
 ## App version and DB version(For migration)
 App version  = 2.0 --> DB version = 13
+App version  = 2.0.1 --> DB version = 13
 
 ## 👤 Thanks
 Thanks to imkks for base of code(scan message)

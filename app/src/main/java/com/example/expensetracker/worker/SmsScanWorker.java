@@ -29,6 +29,38 @@ public class SmsScanWorker extends Worker {
         this.context = context;
     }
 
+    //check hash how scsReceiver also create hash
+    public boolean additionalHashChecker(String address, String body, Cursor cursor, SmsHashDao hashDao,Set<String> existingHashes) {
+        long timestamp = 0;
+
+        // Use date_sent if available (same as SmsReceiver)
+        int sentIndex = cursor.getColumnIndex("date_sent");
+        if (sentIndex != -1) {
+            timestamp = cursor.getLong(sentIndex);
+        }
+
+        // Fallback to date
+        if (timestamp == 0) {
+            timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("date"));
+        }
+
+        // Round timestamp same as SmsReceiver
+        long timestampRounded = (timestamp / (60 * 1000)) * (60 * 1000);
+
+        // Build raw string as SmsReceiver does
+        String raw = address + "|" + body + "|" + timestampRounded;
+        String hash = SmsUtils.generateSmsHash(raw);
+
+        // Check if hash already exists in DB
+        boolean exists = existingHashes.contains(hash);
+        Log.d("ADDITIONAL_CHECKER", "Sender=" + address +
+                " TimestampRounded=" + timestampRounded +
+                " Hash=" + hash +
+                " Exists=" + exists);
+
+        return exists;
+    }
+
     @NonNull
     @Override
     public Result doWork() {
@@ -67,7 +99,14 @@ public class SmsScanWorker extends Worker {
 
                     if (parsedExpense == null) continue;
 
+
                     if (!existingHashes.contains(hash)) {
+
+                        //additional check hash is available in db or not
+                        if (additionalHashChecker(address, body, cursor, hashDao,existingHashes)) {
+                            Log.d("SMS_SCAN", "Duplicate according to SmsReceiver logic, skipping...");
+                            continue; // skip insertion
+                        }
                         // ---- New expense ----
                         Log.d("SMS_SCAN", "NEW expense hash=" + hash);
                         hashDao.insert(new SmsHash(hash));
