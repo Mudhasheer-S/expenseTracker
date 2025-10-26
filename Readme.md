@@ -5,8 +5,8 @@ An intelligent offline Android app that automatically reads SMS transaction mess
 ---
 
 ## 🎥 Demo Video
-<video src="https://github.com/Mudhasheer-S/expenseTracker/raw/main/app_demo.mp4" controls width="400"></video>  
-[🔗 Watch Demo](https://github.com/Mudhasheer-S/expenseTracker/raw/main/app_demo.mp4)
+[▶️ Watch Demo (MP4)](https://github.com/Mudhasheer-S/expenseTracker/raw/main/app_demo.mp4)
+
 
 
 ## ✨ Features
