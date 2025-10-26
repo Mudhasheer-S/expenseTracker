@@ -5,7 +5,7 @@ An intelligent offline Android app that automatically reads SMS transaction mess
 ---
 
 ## 🎥 Demo Video
-[▶️ Watch Demo (MP4)](https://drive.google.com/file/d/128PByfWQ27L9jJKonMwCJuhKHOLtUJtq/view?usp=sharing)
+<a href="https://drive.google.com/file/d/1a2b3c4d5e6F7g8H9I/view" target="_blank">▶️ Watch the Demo on Google Drive</a>
 
 
 
